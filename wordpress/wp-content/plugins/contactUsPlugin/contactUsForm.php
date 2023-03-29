@@ -27,15 +27,26 @@ function example_form_capture(){
         $to ='hind@gmail.com';
         $subject ='test form submission';
         $message =''.$name.' _ '.$Email.' _ '.$comments;
-        // wp_mail($to,$subject,$message);
-        if(function_exists('wp_mail')){
-            wp_mail($to,$subject,$message);
-        }else{
-            print_r('tfooo');
-        }
+        $result = wp_mail($to,$subject,$message);
+         if($result){
+            error_log('Email sent successfully');
+         }else{
+            error_log('Error sending email');
+         }
+
     }
 
 }
 add_action('wp_head','example_form_capture');
 
+function mailtrap($phpmailer) {
+    $phpmailer->isSMTP();
+    $phpmailer->Host = 'sandbox.smtp.mailtrap.io';
+    $phpmailer->SMTPAuth = true;
+    $phpmailer->Port = 2525;
+    $phpmailer->Username = '854cba4881de28';
+    $phpmailer->Password = '3e0351004b45db';
+  }
+  
+  add_action('phpmailer_init', 'mailtrap');
 ?>
